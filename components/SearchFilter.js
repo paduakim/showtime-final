@@ -18,7 +18,7 @@ import { useFocusEffect } from "@react-navigation/native";
 
 const baseUrl = "http://192.168.100.73/showtime";
 
-const Searchfilter = ({ data, navigation }) => {
+const Searchfilter = ({ data, navigation, input }) => {
   const [id, setId] = useState();
   // useEffect(() => {
   //   setProfile();
@@ -47,94 +47,190 @@ const Searchfilter = ({ data, navigation }) => {
       data={data}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => {
-        return (
-          <SafeAreaView style={styles.recipeContainer} key={item.id}>
-            <View style={styles.top}>
-              {/* GO TO THE SELECTED PROFILE OF THE USER WHO POST THE SHOWROOM */}
-              {id == item.user_id ? (
-                <Pressable
-                  onPress={() => {
-                    navigation.navigate("Profile");
-                  }}
-                >
-                  <View style={styles.left}>
-                    <Image
-                      style={styles.profile_pic}
-                      source={{ uri: baseUrl + item.profile_pic }}
-                    />
-                    <Text style={styles.username}>{item.username}</Text>
-                  </View>
-                </Pressable>
-              ) : (
-                <Pressable
-                  onPress={() => {
-                    navigation.navigate("SelectedProfile", item);
-                  }}
-                >
-                  <View style={styles.left}>
-                    <Image
-                      style={styles.profile_pic}
-                      source={{ uri: baseUrl + item.profile_pic }}
-                    />
-                    <Text style={styles.username}>{item.username}</Text>
-                  </View>
-                </Pressable>
-              )}
+        if (input === "") {
+          return (
+            <SafeAreaView style={styles.recipeContainer} key={item.id}>
+              <View style={styles.top}>
+                {/* GO TO THE SELECTED PROFILE OF THE USER WHO POST THE SHOWROOM */}
+                {id == item.user_id ? (
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("Profile");
+                    }}
+                  >
+                    <View style={styles.left}>
+                      <Image
+                        style={styles.profile_pic}
+                        source={{ uri: baseUrl + item.profile_pic }}
+                      />
+                      <Text style={styles.username}>{item.username}</Text>
+                    </View>
+                  </Pressable>
+                ) : (
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("SelectedProfile", item);
+                    }}
+                  >
+                    <View style={styles.left}>
+                      <Image
+                        style={styles.profile_pic}
+                        source={{ uri: baseUrl + item.profile_pic }}
+                      />
+                      <Text style={styles.username}>{item.username}</Text>
+                    </View>
+                  </Pressable>
+                )}
 
-              <View style={styles.right}>
-                <BookmarkButton data={item.id} />
-              </View>
-            </View>
-
-            {/* GO TO THE SELECTED POST */}
-            <Pressable
-              onPress={() => navigation.navigate("SelectedPost", item)}
-            >
-              <View style={styles.mid}>
-                <Image
-                  style={styles.room_pic}
-                  source={{ uri: baseUrl + item.room_picture }}
-                />
-              </View>
-            </Pressable>
-
-            <View style={styles.bottom}>
-              <View style={styles.likespart}>
-                <LikeButton style={styles.icon} data={item.id} />
-                <Pressable
-                  onPress={() => navigation.navigate("SelectedPost", item)}
-                >
-                  <Icon name={"comment-o"} size={28} color={"#F3484B"} />
-                </Pressable>
-                {/* <Text style={styles.likes}>{item.likes} Likes</Text> */}
-              </View>
-              <View style={styles.titlepart}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-                <Pressable
-                  onPress={() => navigation.navigate("SelectedPost", item)}
-                >
-                  <Text style={styles.comments}>{item.comments} Comments</Text>
-                </Pressable>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextInput
-                    caretHidden={true}
-                    style={styles.input}
-                    placeholder="Add a comment..."
-                    onFocus={() => navigation.navigate("SelectedPost", item)}
-                  />
+                <View style={styles.right}>
+                  <BookmarkButton data={item.id} />
                 </View>
               </View>
-            </View>
-          </SafeAreaView>
-        );
+
+              {/* GO TO THE SELECTED POST */}
+              <Pressable
+                onPress={() => navigation.navigate("SelectedPost", item)}
+              >
+                <View style={styles.mid}>
+                  <Image
+                    style={styles.room_pic}
+                    source={{ uri: baseUrl + item.room_picture }}
+                  />
+                </View>
+              </Pressable>
+
+              <View style={styles.bottom}>
+                <View style={styles.likespart}>
+                  <LikeButton style={styles.icon} data={item.id} />
+                  <Pressable
+                    onPress={() => navigation.navigate("SelectedPost", item)}
+                  >
+                    <Icon name={"comment-o"} size={28} color={"#F3484B"} />
+                  </Pressable>
+                  {/* <Text style={styles.likes}>{item.likes} Likes</Text> */}
+                </View>
+                <View style={styles.titlepart}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.description}>{item.description}</Text>
+                  <Pressable
+                    onPress={() => navigation.navigate("SelectedPost", item)}
+                  >
+                    <Text style={styles.comments}>
+                      {item.comments} Comments
+                    </Text>
+                  </Pressable>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <TextInput
+                      caretHidden={true}
+                      style={styles.input}
+                      placeholder="Add a comment..."
+                      onFocus={() => navigation.navigate("SelectedPost", item)}
+                    />
+                  </View>
+                </View>
+              </View>
+            </SafeAreaView>
+          );
+        }
+        if (item.title.toLowerCase().includes(input.toLowerCase())) {
+          return (
+            <SafeAreaView style={styles.recipeContainer} key={item.id}>
+              <View style={styles.top}>
+                {/* GO TO THE SELECTED PROFILE OF THE USER WHO POST THE SHOWROOM */}
+                {id == item.user_id ? (
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("Profile");
+                    }}
+                  >
+                    <View style={styles.left}>
+                      <Image
+                        style={styles.profile_pic}
+                        source={{ uri: baseUrl + item.profile_pic }}
+                      />
+                      <Text style={styles.username}>{item.username}</Text>
+                    </View>
+                  </Pressable>
+                ) : (
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("SelectedProfile", item);
+                    }}
+                  >
+                    <View style={styles.left}>
+                      <Image
+                        style={styles.profile_pic}
+                        source={{ uri: baseUrl + item.profile_pic }}
+                      />
+                      <Text style={styles.username}>{item.username}</Text>
+                    </View>
+                  </Pressable>
+                )}
+
+                <View style={styles.right}>
+                  <BookmarkButton data={item.id} />
+                </View>
+              </View>
+
+              {/* GO TO THE SELECTED POST */}
+              <Pressable
+                onPress={() => navigation.navigate("SelectedPost", item)}
+              >
+                <View style={styles.mid}>
+                  <Image
+                    style={styles.room_pic}
+                    source={{ uri: baseUrl + item.room_picture }}
+                  />
+                </View>
+              </Pressable>
+
+              <View style={styles.bottom}>
+                <View style={styles.likespart}>
+                  <LikeButton style={styles.icon} data={item.id} />
+                  <Pressable
+                    onPress={() => navigation.navigate("SelectedPost", item)}
+                  >
+                    <Icon name={"comment-o"} size={28} color={"#F3484B"} />
+                  </Pressable>
+                  {/* <Text style={styles.likes}>{item.likes} Likes</Text> */}
+                </View>
+                <View style={styles.titlepart}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.description}>{item.description}</Text>
+                  <Pressable
+                    onPress={() => navigation.navigate("SelectedPost", item)}
+                  >
+                    <Text style={styles.comments}>
+                      {item.comments} Comments
+                    </Text>
+                  </Pressable>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <TextInput
+                      caretHidden={true}
+                      style={styles.input}
+                      placeholder="Add a comment..."
+                      onFocus={() => navigation.navigate("SelectedPost", item)}
+                    />
+                  </View>
+                </View>
+              </View>
+            </SafeAreaView>
+          );
+        }
       }}
     />
   );

@@ -28,13 +28,13 @@ const Main = () => {
         {hideSplashScreen ? (
           <Stack.Navigator>
             <Stack.Screen
-              name="Login"
-              component={Login}
+              name="HomeBottomTab"
+              component={BottomTabNavigator}
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="HomeBottomTab"
-              component={BottomTabNavigator}
+              name="Login"
+              component={Login}
               options={{ headerShown: false }}
             />
             <Stack.Screen

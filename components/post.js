@@ -6,11 +6,11 @@ const pressHandler = (item) => {
   return console.log(item);
 };
 
-const Post = ({ data, navigation }) => {
+const Post = ({ data, navigation, input }) => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Searchfilter data={data} navigation={navigation} />
+        <Searchfilter data={data} navigation={navigation} input={input} />
       </ScrollView>
     </View>
   );
