@@ -45,6 +45,7 @@ export default function Home({ navigation, route }) {
         // alert("Login Successful!");
         setPosts(response.data.payload);
       } else {
+        console.log("aksdfjlaskdjflaskdjf");
         throw new Error("An error has occurred");
       }
     } catch (error) {
